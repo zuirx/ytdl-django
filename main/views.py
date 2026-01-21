@@ -126,7 +126,7 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
     if not custom_output_dir: output_dir = DOWNLOAD_DIR
     else: output_dir = custom_output_dir
 
-    os.makedirs('context-downloads',exist_ok=True)
+    os.makedirs('content-downloads',exist_ok=True)
     
     if not video_id:
         video_id = subpath.split("/")[-1]
@@ -138,8 +138,8 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
 
     match type:
         case 'video': 
-            format = 'best'
-            filetype = 'mp4'
+            format = 'bestvideo+bestaudio/best'
+            filetype = 'webm'
         case 'audio': 
             format = 'bestaudio'
             filetype = 'mp3'

@@ -24,3 +24,4 @@ yt-dlp front-end in django
 - [ ] add server limits
 - [ ] translation languages
 - [ ] mix audio and video (on the way)
+- [ ] error reporter
