@@ -11,6 +11,8 @@ yt-dlp front-end in django
 ```pip install -r requirements.txt```
 - In the project's directory, create the static files:
 ```python ./manage collectstatic```
+- Create a .env file along side manage.py, configure the secret key like: 
+```SECRET-KEY = "yoursecretwordshere"```
 - Run the server, configure as you like: 
 ```python runserver-srv.py```
 
