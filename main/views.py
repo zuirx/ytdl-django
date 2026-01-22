@@ -1,4 +1,4 @@
-import yt_dlp, os, re, random, subprocess
+import yt_dlp, os, re, random, subprocess, pprint
 from django.shortcuts import render, redirect
 from django.http import FileResponse
 from django.utils import timezone
@@ -129,8 +129,9 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
     os.makedirs('content-downloads',exist_ok=True)
     
     if not video_id:
-        video_id = subpath.split("/")[-1]
-        if '?v=' in subpath:
+        random_num = random.randrange(100000,999999)
+        video_id = f'file{random_num}'
+        if '?v=' in subpath and "youtube.com" in subpath:
             video_id = subpath.split("?v=")[-1]
 
     try: os.remove(final_path)
@@ -162,19 +163,20 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl: 
             info = ydl.extract_info(url, download=True)
+            # pprint.pprint(info)
+
+            try:
+                final_path = info['requested_downloads'][0]['filepath']
+                print(info['filepath'])
+            except: pass
 
         if filename: video_id = filename
-        else:
-            if not video_id:
-                # temporary
-                random_num = random.randrange(100000,999999)
-                video_id = f'file{random_num}'
 
-        if not noreturn:
+        if noreturn:
+            return f'{video_id}.{filetype}'
+        else:
             response = FileResponse(open(final_path, 'rb'), as_attachment=True, filename=f'{video_id}.{filetype}')
             return response
-        else:
-            return f'{video_id}.{filetype}'
    
     except Exception as e:
         messages.error(request, f"Error: {e}")
