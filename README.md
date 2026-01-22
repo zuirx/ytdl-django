@@ -16,6 +16,8 @@ yt-dlp front-end in django
 - Run the server, configure as you like: 
 ```python runserver-srv.py```
 
+Optionally, you could set a cron or a task that will update yt-dlp lib every hour.
+
 ## TODO
 - [ ] show download realtime % progress
 - [ ] transcript download
