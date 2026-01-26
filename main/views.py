@@ -121,6 +121,10 @@ def user_def_cookie(request):
     return response
 
 
+def ffconverter(inn, out, param):
+    pass
+
+
 def download_yt(request, subpath='', video_id='', noreturn=False, middle='', type='video', itag=0, typeitag='', custom_output_dir='', filename=''):
     url = subpath + middle + video_id
     if not custom_output_dir: output_dir = DOWNLOAD_DIR
@@ -159,24 +163,19 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
         'writethumbnail': True, 
         'postprocessors': [
             {
-                # 1. Convert thumbnail to JPG (Essential for MP3/M4A)
+                'key': 'EmbedThumbnail',
+            },
+            {
                 'key': 'FFmpegThumbnailsConvertor',
                 'format': 'jpg',
                 'when': 'before_dl',
             },
             {
-                # 3. Embed the converted JPG into the audio file
-                'key': 'EmbedThumbnail',
-            },
-            {
-                # 4. Add the metadata tags
                 'key': 'FFmpegMetadata',
                 'add_metadata': True,
             }
         ],
     }
-    
-    pprint.pprint(ydl_opts)
 
     match type:
         case 'audio':
