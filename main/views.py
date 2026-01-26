@@ -1,4 +1,4 @@
-import yt_dlp, os, re, random, subprocess, pprint
+import yt_dlp, os, re, random, subprocess, pprint, traceback
 from django.shortcuts import render, redirect
 from django.http import FileResponse
 from django.utils import timezone
@@ -156,8 +156,37 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
         'quiet': True,
         'format': format,
         'outtmpl': final_path,
+        'writethumbnail': True, 
+        'postprocessors': [
+            {
+                # 1. Convert thumbnail to JPG (Essential for MP3/M4A)
+                'key': 'FFmpegThumbnailsConvertor',
+                'format': 'jpg',
+                'when': 'before_dl',
+            },
+            {
+                # 3. Embed the converted JPG into the audio file
+                'key': 'EmbedThumbnail',
+            },
+            {
+                # 4. Add the metadata tags
+                'key': 'FFmpegMetadata',
+                'add_metadata': True,
+            }
+        ],
     }
+    
+    pprint.pprint(ydl_opts)
 
+    match type:
+        case 'audio':
+            ydl_opts['postprocessors'].insert(0, {
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192'
+            })
+
+    pprint.pprint(ydl_opts)
     # print(final_path,'+++++++++++++++++++++++++++++')
 
     try:
@@ -170,7 +199,12 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
                 print(info['filepath'])
             except: pass
 
-        if filename: video_id = filename
+            try:
+                title = info['title']
+            except:
+                title = filename
+
+        if title: video_id = title
 
         if noreturn:
             return f'{video_id}.{filetype}'
@@ -180,6 +214,7 @@ def download_yt(request, subpath='', video_id='', noreturn=False, middle='', typ
    
     except Exception as e:
         messages.error(request, f"Error: {e}")
+        traceback.print_exc()
         return redirect('home_yt')
 
 

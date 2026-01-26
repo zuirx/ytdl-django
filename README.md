@@ -21,8 +21,8 @@ Optionally, you could set a cron or a task that will update yt-dlp lib every hou
 ## TODO
 - [ ] show download realtime % progress
 - [ ] transcript download
-- [ ] download the playlist (and other yt-dlp features)
-- [ ] select video/audio: good, bad, medium quality
+- [ ] playlist download in zip, allinone, etc
+- [ ] define video/audio: good, bad, medium quality
 - [ ] add server limits
 - [ ] translation languages
 - [ ] mix audio and video (on the way)

@@ -181,9 +181,9 @@ cython_debug/
 .cursorindexingignore
 
 
-/ytdl-downloads
 TODO_local.md
-/content-mix/*
-/content-downloads/*
 ytdl/secret_key.py
+/ytdl-downloads
+/content-mix/
+/content-downloads/
 /staticfiles

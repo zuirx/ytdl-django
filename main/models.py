@@ -1,5 +1,7 @@
 from django.db import models
 
-# Unused, for now
-# class YtdlpVersion(models.Model):
-#     version = models.TextField(blank=True,null=True)
+
+class ErrorReport(models.Model):
+    pipv4 = models.TextField(blank=True,null=True)
+    date = models.DateTimeField(blank=True,null=True)
+    error = models.TextField(blank=True,null=True)
