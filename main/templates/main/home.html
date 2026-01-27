@@ -224,7 +224,7 @@
 <body>
 
     <header>
-        <h1>ytdl.lol</h1>
+        <h1>YTDL.LOL</h1>
         <div class="subtitle">web content downloader, or just a <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">yt-dlp</a> frontend</div>
     </header>
 
@@ -257,6 +257,7 @@
                     Best Video
                 </button>
                 <button type="submit" name="action" value="info" class="btn-ghost">Pull Download Options</button>
+                <button type="submit" name="action" value="playlist" class="btn-secondary">Playlist Downloader</button>
             </div>
         </form>
     </main>
@@ -352,6 +353,9 @@
     {% endif %}
 
     <footer>
+        {% if lastupdate %}
+            <span>last update: {{lastup}} {% if lastuptdy %} <span class="alert-up">!</span> {% endif %}</span>
+        {% endif %}
         {% if ytdlpver %}
             <span>yt-dlp version: {{ytdlpver}}</span>
         {% endif %}
