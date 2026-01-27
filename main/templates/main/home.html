@@ -257,7 +257,7 @@
                     Best Video
                 </button>
                 <button type="submit" name="action" value="info" class="btn-ghost">Pull Download Options</button>
-                <button type="submit" name="action" value="playlist" class="btn-secondary">Playlist Downloader</button>
+                <!-- <button type="submit" name="action" value="playlist" class="btn-secondary">Playlist Downloader</button> -->
             </div>
         </form>
     </main>
@@ -353,13 +353,14 @@
     {% endif %}
 
     <footer>
-        {% if lastupdate %}
-            <span>last update: {{lastup}} {% if lastuptdy %} <span class="alert-up">!</span> {% endif %}</span>
+        {% if lastup %}
+            <span>last update: {{lastup}} {% if lastuptxt %} "{{lastuptxt}}" {% endif %} {% if lastuptdy %} <span class="alert-up">!</span> {% endif %}</span>
+            |
         {% endif %}
         {% if ytdlpver %}
             <span>yt-dlp version: {{ytdlpver}}</span>
         {% endif %}
-        <p>by <a href="https://zuirx.com">zuirx</a> | <a href="https://github.com/zuirx/ytdl-django">host your own</a> | <a href="https://x.com/zuirxriuz" target="_blank" rel="noopener">x/twitter</a></p>
+        <p>by <a href="https://zuirx.com">zuirx</a> (<a href="https://x.com/zuirxriuz" target="_blank" rel="noopener">x/twitter</a>) | <a href="https://github.com/zuirx/ytdl-django">host your own</a></p>
     </footer>
 
     <script>

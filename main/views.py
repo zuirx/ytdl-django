@@ -1,13 +1,14 @@
-import yt_dlp, os, re, random, subprocess, pprint, traceback
+import yt_dlp, os, re, random, subprocess, pprint, traceback, requests
+from datetime import datetime, timedelta, timezone as tz
+from importlib.metadata import version
 from django.shortcuts import render, redirect
 from django.http import FileResponse
 from django.utils import timezone
 from django.contrib import messages
-from datetime import timedelta
-from importlib.metadata import version
 
 DOWNLOAD_DIR = 'content-downloads'
 MIX_DIR = 'content-mix'
+GITREPO = 'https://api.github.com/repos/zuirx/ytdl-django/commits'
 
 def home_yt(request, subpath=''):
 
@@ -18,6 +19,13 @@ def home_yt(request, subpath=''):
     
     elif "https://youtu.be" in subpath:
         return download_yt(request,subpath)
+    
+    lastup, lastuptxt = '','' ; lastuptdy = False
+    if True:
+        lastup, lastuptxt = get_last_update_github()
+        today = datetime.now(tz.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+        if lastup == today: lastuptdy = True
+    # except: pass
 
     if request.method == 'POST':
         url = request.POST.get("yt_link")
@@ -94,7 +102,10 @@ def home_yt(request, subpath=''):
     theme = request.COOKIES.get('theme')
     context = {
         'theme' : theme,
-        'ytdlpver' : ytdlpver
+        'ytdlpver' : ytdlpver,
+        'lastup' : lastup,
+        'lastuptxt' : lastuptxt,
+        'lastuptdy' : lastuptdy,
     }
     return render(request, 'main/home.html', context)
 
@@ -119,6 +130,20 @@ def user_def_cookie(request):
         )
 
     return response
+
+
+def get_last_update_github():
+
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    
+    response = requests.get(GITREPO, headers=headers)
+    
+    if response.status_code == 200:
+        commits = response.json()
+        if commits:
+            last_commit_date = commits[0]['commit']['committer']['date']
+            commit_text = commits[0]['commit']['message']
+            return last_commit_date, commit_text
 
 
 def ffconverter(inn, out, param):
