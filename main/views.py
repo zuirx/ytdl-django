@@ -21,11 +21,11 @@ def home_yt(request, subpath=''):
         return download_yt(request,subpath)
     
     lastup, lastuptxt = '','' ; lastuptdy = False
-    if True:
+    try:
         lastup, lastuptxt = get_last_update_github()
         today = datetime.now(tz.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
         if lastup == today: lastuptdy = True
-    # except: pass
+    except: pass
 
     if request.method == 'POST':
         url = request.POST.get("yt_link")
@@ -93,6 +93,9 @@ def home_yt(request, subpath=''):
 
             case 'audio':
                 return download_yt(request,subpath=url,type='audio')
+            
+            case 'playlist':
+                pass
 
     try:
         ytdlpver = version('yt_dlp')
